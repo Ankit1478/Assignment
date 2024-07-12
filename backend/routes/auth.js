@@ -1,30 +1,27 @@
 const express = require('express');
 const passport = require('passport');
 const router = express.Router();
-const isAuthenticated = require('../middlewares/isAuthenticated');
-const feedbackController = require('../controllers/feedbackController');
 
-router.get('/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
+router.get('/google',
+  passport.authenticate('google', { scope: ['profile', 'email'] }));
 
-router.get('/google/callback', passport.authenticate('google', { failureRedirect: '/' }),
-    (req, res) => {
-        try {
-            res.redirect('/');
-        } catch {
-            console.error();
-        }
+router.get('/google/callback', 
+  passport.authenticate('google', { failureRedirect: '/' }),
+  (req, res) => {
+    res.redirect('http://localhost:5173/feedback');
+  });
 
-    });
-
-// router.get('/auth/google',
-//     passport.authenticate('google', { failureRedirect: '/' }),
-//     (req, res) => {
-//         res.redirect('/feedback');
-//     });
-
-router.get('/logout', (req, res) => {
-    req.logout();
+router.get('/logout', (req, res, next) => {
+  req.logout(err => {
+    if (err) {
+      return next(err);
+    }
     res.redirect('/');
+  });
+});
+
+router.get('/current_user', (req, res) => {
+  res.send(req.user);
 });
 
 module.exports = router;

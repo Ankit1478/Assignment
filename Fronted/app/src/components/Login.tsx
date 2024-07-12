@@ -1,8 +1,5 @@
-import React from 'react';
-
-export function Home() {
- 
-const handleGoogleLogin = () => {
+export function Login() {
+    const handleGoogleLogin = () => {
         window.open('http://localhost:3000/auth/google', '_self');
     };
 
@@ -14,5 +11,3 @@ const handleGoogleLogin = () => {
     );
 };
 
-
-export default Home;
